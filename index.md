@@ -8,3 +8,10 @@ And you can include links, like this [link to fast.ai](https://www.fast.ai). Pos
 
 ## post
 
+<ul>
+  {% for post in site.posts %}
+    <li>
+      <a href="/github-pages-with-jekyll{{ post.url }}">{{ post.title }}</a>
+    </li>
+  {% endfor %}
+</ul>
