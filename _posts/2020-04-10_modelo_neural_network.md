@@ -11,4 +11,7 @@ El primer paso es la definición de una primera capa. Como comentamos en el art�
 el primer nivel consiste simplemente en multiplicar nuestra entrada por la matriz de pesos y sumarle 
 el termino bias. Recordamos la función.
 
-y=W*x + b
+$y_hat=W*x + b$
+
+###Multiplicación de matrices
+Es importante conocer los mecanismos de la multiplicación de matrices para 
