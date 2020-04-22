@@ -55,6 +55,31 @@ $$
 \left[\begin{array}{ccc}x_{11}& x_{12} & x_{13} \\ x_{21}& x_{22} & x_{23}\end{array}\right] * \left[\begin{array}{ccc}w_{11}&w_{12} & w_{13} \\ w_{21} & w_{22} & w_{23}\\ w_{31} & w_{32}& w_{33}\end{array}\right] = \left[\begin{array}{ccc} r_{11}  & r_{12} & r_{13}\\ r_{21}  & r_{22} & r_{23}\end{array}\right]
 $$
 
+$$ 
+r_{11} = x_{11}*w_{11} + x_{12}*w_{21} + x_{13}*w_{31}
+$$
+
+$$
+r_{12} = x_{11}*w_{12} + x_{12}*w_{22} + x_{13}*w_{32}
+$$
+
+$$
+r_{13} = x_{11}*w_{13} + x_{12}*w_{23} + x_{13}*w_{33}
+$$
+
+$$
+r_{21} = x_{21}*w_{11} + x_{22}*w_{22} + x_{23}*w_{31}
+$$
+
+$$
+r_{22} = x_{21}*w_{12} + x_{22}*w_{22} + x_{23}*w_{32}
+$$
+
+$$
+r_{23} = x_{21}*w_{13} + x_{22}*w_{23} + x_{23}*w_{33}
+$$
+
+
 La primera fila del resultado es el valor de cada una de las tres neuronas para el primer registro de entrada. La segunda fila corresponde a los valores de cada neurona para el segundo registro.
 
 Conocer las dimensiones de la salida de nuestro modelo es esencial para poder incorporar más niveles a nuestro modelo.
