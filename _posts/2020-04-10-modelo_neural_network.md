@@ -109,22 +109,33 @@ Si $m(x)$ es nuestro modelo, los datos de entrada serían la $x$. Vemos que en l
 
 ### Funciones de activación.
 
-Lo primero que tenemos que decir es que el modelo descrito anteriomente no funciona. Una composición de dos funciones lineales es otra función linear. Eso significa que si nuestro modelo con dos capas se comportaría igual que un modelo de una sola capa. 
+Lo primero que tenemos que decir es que el modelo descrito anteriomente no funciona. Una composición de dos funciones lineales es otra función linear. Eso significa que nuestro modelo con dos capas se comporta exactamente igual que un modelo de una sola capa. No aumentamos la capacidad de aprendizaje al añadir nuevas capas
 
-Sin entrar en detalles desarrollamos la función anterior.
+Sin entrar en mucho detalle desarrollamos la función anterior.
 
 $m(x)=g(f(x))=g(W_1*x + b_1)= W_2*(W_1*x + b_1) + b_2 = W_2*W_1*x + W_2*b_1 + b_2 = W*x + b$
 
-> Si aplicamos las reglas del cálculo de matrices podrías comprobar $W_2*W_1$ sería una matriz de pesos similar similar a la capa uno y que $W_2*b_1$ sería un vector de las mismas dimensiones que $b_2$ y al sumarlo se comportaría como un nuevo termino bias.
+> Si aplicamos las reglas del cálculo de matrices podrías comprobar $W_2*W_1$ sería una matriz de pesos similar la capa uno y que $W_2*b_1$ sería un vector de las mismas dimensiones que $b_2$ y al sumarlo se comportaría como un nuevo termino bias (sesgo).
 
-Para evitar este problema se aplica una función no linear al final de cada capa. De esta forma se rompe la linearidad y podemos añadir más capas de forma efectiva. cada nueva capa significa nuevos pesos y nuesvos terminos bias que el modelo tiene que ajustar.
+Para evitar este problema se aplica una función no linear al final de cada capa. De esta forma se rompe la linearidad y podemos añadir más capas de forma efectiva. Cada nueva capa significa nuevos pesos y nuevos terminos bias (sesgos) que el modelo tiene que ajustar. De esta forma aumentamos la capacidad de aprendizaje del modelo al añadir nuevas capas.
 
 Es importante tener en cuenta que al aplicar una función de activación no modificamos ni la dimensión de la matriz resultante ni añadimos más parámetros al modelo.
 
 Las funciones de activación más comunes son:
-- Sigmoig:
-- tangente hiperbolica
-- Relu:
+- Logistic (sigmoid): ${\displaystyle S(x)={\frac {1}{1+e^{-x}}}={\frac {e^{x}}{e^{x}+1}}}$
+
+![logistic](/images/sigmoid.png)
+
+- tangente hiperbolica: ${\displaystyle \tanh x={\cfrac {e^{x}-e^{-x}}{e^{x}+e^{-x}}}}$
+
+![tanh](/images/tanh.png)
+
+- Relu: $\displaystyle f(x) =\max(0,x)$
+
+![Relu](/images/relu.png)
+  
+
+Inicialmente la función logistic se utilizaba con mucha frecuencia como función de activación. Actualmente Relu es la función más utilizada principalmente con configuraciones de redes neuronales sencillas. En redes neuronales más complejas como redes convolucionales o recurrentes también se utiliza logistic y tanh.
 
  ### Modelo multicapa
 
@@ -139,28 +150,44 @@ Vamos a ver un ejemplo sencillo.
 >Somos una inmoviliaría que queremos informar a nuestros clientes del precio estimado de venta de su vivienda de forma inmediata. De operaciones anteriores tenemos información de 2.000 viviendas con sus características y sus precios reales de venta. De cada vivienda tenemos 45 caracterísitcas que nos definen el inmueble (planta, metros cuadrados, número de habitaciones, localidad, barrio etc).
 
 
-Tomamos la decisión de crear un modelo de red neuronal con tres cuatro capas. La primera capa representa la entrada y decidimos pasar la información de entrenamiento a nuestro modelo en paquetes de 32 viviendas. añadimos dos capas ocultas donde la primera capa tendrá 200 neuronas, la segunda 100. Como queremos predecir un valor único que será el precio estimado de venta la capa de salida tendrá una única neurona.
+Tomamos la decisión de crear un modelo de red neuronal con cuatro capas. La primera capa representa la entrada y decidimos pasar la información de entrenamiento a nuestro modelo en paquetes de 32 viviendas. añadimos dos capas ocultas donde la primera capa tendrá 200 neuronas y la segunda 100. Como queremos predecir un valor único que será el precio estimado de venta la capa de salida tendrá una única neurona.
 
 El esquema de nuestra red neuronal sería de esta manera.
 
+![red neuronal](/images/ejemplo_rn.jpg)
+
 Vamos a analizar los parámetros y las dimensiones de las matrices en cada capa para conocer mejor el funcionamiento interno.
 
-* Capa de entrada (input layer): es la más sencilla de analizar. Si cada vivienda tiene 45 características y al modelo le pasamos 32 viviendas la entrada al modelo es una matriz IL(32,45). Tenemos 32 filas y 45 columnas.
-* Primera capa oculta (hidden layer 1): Esta es una capa propiamente dicha de nuestro modelo por qlo que tenemos una matriz de pesos y un vector de terminos bias. La matriz de entrada se multiplica por la matriz de pesos y se le suma el término bias. Tanto la matriz de pesos como el vector bias de suma son parámetros de esta capa. tenemos 9200 parámetros
+* Capa de entrada (input layer): es la más sencilla de analizar. Si cada vivienda tiene 45 características y al modelo le pasamos 32 viviendas la entrada al modelo es una matriz input(32,45). Tenemos 32 filas y 45 columnas.
+* Primera capa oculta (hidden layer 1): Esta es una capa propiamente dicha de nuestro modelo por lo que tenemos una matriz de pesos y un vector de terminos bias. La matriz de entrada se multiplica por la matriz de pesos y se le suma el término bias. Tanto la matriz de pesos como el vector bias de suma son parámetros de esta capa. Tenemos 9200 parámetros
   
   - Matriz de pesos: $W_1(45,200) = 9000$ parámetros
   - Bias: $b_1(200) = 200$ parámetros
 
-* Segunda capa oculta (hidden layer 2): Toma como entrada la salida de la capa anterior. El número de filas corresponde al número de neuronas de la capa anterior. Las columnas corresponden al número de nueronas decidio para esta capa. tenemos 20100 parámetros
+* Segunda capa oculta (hidden layer 2): Toma como entrada la salida de la capa anterior. El número de filas corresponde al número de neuronas de la capa anterior. Las columnas corresponden al número de neuronas escogido para esta capa. Tenemos 20100 parámetros
   
   - Matriz de pesos: $W_1(200,100) = 20000$ parámetros
   - Bias: $b_1(100) = 100$ parámetros
 
-* Capa de salida (output layer): Toma como entrada la salida de la capa anterior. El número de filas corresponde al número de neuronas de la capa anterior. Las columnas corresponden al número de nueronas decidio para esta capa. tenemos 20100 parámetros
+* Capa de salida (output layer): Toma como entrada la salida de la capa anterior. El número de filas corresponde al número de neuronas de la capa anterior. Las columnas corresponden al número de nueronas decidio para esta capa, en este caso una única columna. Tenemos 101 parámetros
   
   - Matriz de pesos: $W_1(100,1) = 100$ parámetros
   - Bias: $b_1(1) = 1$ parámetros
 
+En total el modelo tiene x parámetros que tiene que ajustar en la fase de entrenamiento. Una vez entrenado nuestro modelo podemos utilizarlo para predecir el coste estimado de venta de nuestra vivienda. Un modelo ya entrenado y listo para su uso se compone de dos partes.
+- Arquitectura: descripción de las diferentes capas de nuestro modelo.
+- Parámetros: los valores que se han ajustado en la fase de entrenamiento.
 
+# Conclusión
+
+Un modelo de red neuronal se compone de varias capas que constituyen la arquitectura del modelo. Cada capa consiste en una función lineal más una función de activación. 
+
+La función lineal es del tipo $f(x) = W*x +b$ y consiste en la matriz de pesos $W$ y el término de sesgo o bias $b$. La matriz de pesos y el término bias representan los parámetros de la capa que el modelo tiene que ajustar en la fase de entrenamiento.
+
+La función de activación cumple la misión de evitar la linearidad al componer varias capas. No afecta ni a las dimensiones de la salida de la capa ni tampoco genera nuevos parámetros. Simplemente es una función que se aplica a la salida de la función lineal. Relu es una de las funciones de activación más utilizada. Simplemente devuelve un cero si el valor es negativo y el propio valor si es positivo.
+
+El tipo de modelo que hemos explicado es el más sencillo y se denomina fully-connected neural network. Existen otros tipos de capas con configraciones más complejas pero todas comparten un patrón de capas encadenadas.
+
+En el siguiente árticulo hablaremos del proceso de entrenamiento  y como conseguir modelos que nos pemitan predecir valores o inferir características a partir de datos nuevos (distintos a los utiilizados para entranar le modelo).
 
 
